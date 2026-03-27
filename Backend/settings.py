@@ -12,18 +12,28 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# -------------------------
+# SECURITY SETTINGS
+# -------------------------
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
-SECRET_KEY = 'django-insecure-k(y0omu1aag9xan130xnpfkhvv@1a(9(g)2n%6^+u7p(@+6yob'
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-DEBUG = True
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'student-management-system-b52c.onrender.com',
+]
 
-ALLOWED_HOSTS = []
-
-
-
+# -------------------------
+# INSTALLED APPS
+# -------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,16 +44,19 @@ INSTALLED_APPS = [
     'core', 
     'rest_framework_simplejwt',
     'rest_framework',
-     "corsheaders",
-     "Teacher",
-     "student",
+    'corsheaders',
+    'Teacher',
+    'student',
     'cloudinary',
     'cloudinary_storage',
 ]
 
+# -------------------------
+# MIDDLEWARE
+# -------------------------
 MIDDLEWARE = [
-     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,6 +67,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Backend.urls'
 
+# -------------------------
+# TEMPLATES
+# -------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -71,50 +87,57 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Backend.wsgi.application'
 
-
+# -------------------------
+# DATABASE
+# -------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'student_management',
-        'USER': 'vipinkumar',            
-        'PASSWORD': 'vipin@123',    
-        'HOST': 'localhost',       
-        'PORT': '5432',               
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')  # Render Database URL
+    )
 }
 
-
+# -------------------------
+# PASSWORD VALIDATORS
+# -------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
+# -------------------------
+# INTERNATIONALIZATION
+# -------------------------
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
+# -------------------------
+# STATIC & MEDIA
+# -------------------------
+STATIC_URL = '/static/'
 
-STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_NAME", "dgip1v0fj"),
+    api_key=os.environ.get("CLOUDINARY_KEY", "952739162556816"),
+    api_secret=os.environ.get("CLOUDINARY_SECRET", "YybAJPBxX-T3s7_E-ers77fy2u4")
+)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# -------------------------
+# AUTH
+# -------------------------
 AUTH_USER_MODEL = 'core.CustomUser'
 
+# -------------------------
+# REST FRAMEWORK
+# -------------------------
 REST_FRAMEWORK = {
-
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -122,23 +145,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     
-
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# -------------------------
+# CORS
+# -------------------------
 CORS_ALLOW_ALL_ORIGINS = True
-import os
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
-import cloudinary
-
-cloudinary.config(
-    cloud_name="dgip1v0fj",
-    api_key="952739162556816",
-    api_secret="YybAJPBxX-T3s7_E-ers77fy2u4"
-)
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
