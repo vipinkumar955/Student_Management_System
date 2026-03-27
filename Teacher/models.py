@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import CustomUser  
+from cloudinary.models import CloudinaryField
 
 # COURSE MODEL
 class Course(models.Model):
@@ -8,6 +9,7 @@ class Course(models.Model):
     ('java', 'Java'),
     ('react', 'React'),
     ('php', 'PHP'),
+    ('other', 'Other'), 
 ]
 
     name = models.CharField(max_length=200)
@@ -20,7 +22,7 @@ class Course(models.Model):
     )
     duration = models.CharField(max_length=50, blank=True)  # e.g., "3 months"
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
-    syllabus = models.FileField(upload_to='syllabus/', blank=True, null=True)
+    syllabus = CloudinaryField('file',resource_type='raw', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -68,7 +70,6 @@ class Grade(models.Model):
     def __str__(self):
         return f"{self.student.user.username} - {self.course.name} - {self.assignment.title}: {self.score}/{self.total}"
 # ATTENDANCE MODEL
-# -------------------------
 class Attendance(models.Model):
     STATUS_CHOICES = [
         ('present', 'Present'),

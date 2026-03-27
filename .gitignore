@@ -17,9 +17,6 @@ staticfiles/
 venv/
 env/
 
-#  Node
-node_modules/
-dist/
 
 #  VS Code
 .vscode/

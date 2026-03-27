@@ -13,23 +13,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-k(y0omu1aag9xan130xnpfkhvv@1a(9(g)2n%6^+u7p(@+6yob'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,6 +37,8 @@ INSTALLED_APPS = [
      "corsheaders",
      "Teacher",
      "student",
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -77,23 +72,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'student_management',  # database name
-        'USER': 'vipinkumar',               # postgres user
-        'PASSWORD': 'vipin@123',        # postgres password
-        'HOST': 'localhost',           # local machine
-        'PORT': '5432',                # default port
+        'NAME': 'student_management',
+        'USER': 'vipinkumar',            
+        'PASSWORD': 'vipin@123',    
+        'HOST': 'localhost',       
+        'PORT': '5432',               
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -111,9 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -123,28 +109,22 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 STATIC_URL = 'static/'
-# settings.py
 AUTH_USER_MODEL = 'core.CustomUser'
 
 REST_FRAMEWORK = {
 
-    # Authentication (User को पहचानने के लिए)
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-
-    # Permission (किसको access मिलेगा)
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),   # 30 min
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),      # 1 day
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     
 
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
@@ -153,3 +133,12 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+import cloudinary
+
+cloudinary.config(
+    cloud_name="dgip1v0fj",
+    api_key="952739162556816",
+    api_secret="YybAJPBxX-T3s7_E-ers77fy2u4"
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
