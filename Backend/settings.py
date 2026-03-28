@@ -89,19 +89,24 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 
 # -------------------------
 # DATABASE
-# -------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vipin_db',             #database 
-        'USER': 'vipinrajput',          # PostgreSQL username
-        'PASSWORD': 'vipin@123',        # username का password
-        'HOST': 'localhost',      
-        'PORT': '5432',                 # default PostgreSQL port
+if os.environ.get("DATABASE_URL"):
+    # 👉 Render (Production)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
-}
-# -------------------------
-# PASSWORD VALIDATORS
+else:
+    # 👉 Local (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+#ASSWORD VALIDATORS
 # -------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
