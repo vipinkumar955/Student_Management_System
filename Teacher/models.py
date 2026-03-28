@@ -20,7 +20,7 @@ class Course(models.Model):
         related_name='courses',
         limit_choices_to={'role': 'teacher'}
     )
-    duration = models.CharField(max_length=50, blank=True)  # e.g., "3 months"
+    duration = models.CharField(max_length=50, blank=True)  
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
     syllabus = CloudinaryField('file',resource_type='raw', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,14 +62,14 @@ class Grade(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='grades')
     score = models.IntegerField()
     total = models.IntegerField(default=100)
-    date_recorded = models.DateField()  # NOT auto_now_add
+    date_recorded = models.DateField()  
 
     class Meta:
-        unique_together = ('student', 'assignment')  # duplicate grades not allowed
+        unique_together = ('student', 'assignment')  
 
     def __str__(self):
         return f"{self.student.user.username} - {self.course.name} - {self.assignment.title}: {self.score}/{self.total}"
-# ATTENDANCE MODEL
+ #ATTENDANCE MODEL
 class Attendance(models.Model):
     STATUS_CHOICES = [
         ('present', 'Present'),

@@ -24,9 +24,15 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        user = authenticate(username=data['username'], password=data['password'])
+        username = data.get('username')
+        password = data.get('password')
+        if not username or not password:
+            raise serializers.ValidationError("Username and password are required")
+        
+        user = authenticate(username=username, password=password)
         if not user:
-            raise serializers.ValidationError("Invalid Credentials")
+            raise serializers.ValidationError("Invalid credentials")
+        
         refresh = RefreshToken.for_user(user)
         return {
             'username': user.username,
