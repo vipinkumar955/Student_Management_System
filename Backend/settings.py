@@ -91,11 +91,15 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 # DATABASE
 # -------------------------
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')  # Render Database URL
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'vipin_db',             #database 
+        'USER': 'vipinrajput',          # PostgreSQL username
+        'PASSWORD': 'vipin@123',        # username का password
+        'HOST': 'localhost',      
+        'PORT': '5432',                 # default PostgreSQL port
+    }
 }
-
 # -------------------------
 # PASSWORD VALIDATORS
 # -------------------------
@@ -132,7 +136,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # -------------------------
 # AUTH
 # -------------------------
-AUTH_USER_MODEL = 'core.CustomUser'
+AUTH_USER_MODEL ='core.CustomUser'
 
 # -------------------------
 # REST FRAMEWORK
