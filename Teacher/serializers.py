@@ -33,6 +33,9 @@ class CreateStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentProfile
         fields = ['user', 'enrolled_courses']
+        extra_kwargs = {
+            'user': {'required': False}  # Make user optional
+        }
 
 
 # ASSIGNMENT SERIALIZER
