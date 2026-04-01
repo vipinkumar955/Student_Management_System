@@ -29,6 +29,11 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'student-management-system-b52c.onrender.com',
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://your-frontend-url.onrender.com",
+]
+
 
 # -------------------------
 # INSTALLED APPS
@@ -158,4 +163,9 @@ SIMPLE_JWT = {
 # CORS
 # -------------------------
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://student-management-frontend-hi40.onrender.com",
+]
 
