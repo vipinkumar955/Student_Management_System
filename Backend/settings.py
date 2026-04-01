@@ -162,7 +162,7 @@ SIMPLE_JWT = {
 # -------------------------
 # CORS
 # -------------------------
-CORS_ALLOW_ALL_ORIGINS = True  # For development only
+CORS_ALLOW_ALL_ORIGINS = False # For development only
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
