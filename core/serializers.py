@@ -1,3 +1,4 @@
+# core/serializers.py
 from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth import authenticate
@@ -43,6 +44,7 @@ class LoginSerializer(serializers.Serializer):
         return {
             'username': user.username,
             'role': user.role,
+            'user_id': user.id,
             'access': str(refresh.access_token),
             'refresh': str(refresh)
         }
