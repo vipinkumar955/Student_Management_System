@@ -26,16 +26,19 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'student_name', 'enrolled_courses', 'date_joined']
 
 
-# CREATE STUDENT
+# CREATE STUDENT - FIXED
 class CreateStudentSerializer(serializers.ModelSerializer):
-    enrolled_courses = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), many=True)
+    enrolled_courses = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), many=True, required=False)
 
     class Meta:
         model = StudentProfile
         fields = ['user', 'enrolled_courses']
-        extra_kwargs = {
-            'user': {'required': False}  # Make user optional
-        }
+    
+    def create(self, validated_data):
+        enrolled_courses = validated_data.pop('enrolled_courses', [])
+        student_profile = StudentProfile.objects.create(**validated_data)
+        student_profile.enrolled_courses.set(enrolled_courses)
+        return student_profile
 
 
 # ASSIGNMENT SERIALIZER
