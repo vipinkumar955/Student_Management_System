@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://your-frontend-url.onrender.com",
+    "https://student-management-frontend-hi40.onrender.com",
 ]
 
 
@@ -164,11 +164,6 @@ SIMPLE_JWT = {
 # -------------------------
 CORS_ALLOW_ALL_ORIGINS = False # For development only
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://student-management-frontend-hi40.onrender.com",
-]
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
