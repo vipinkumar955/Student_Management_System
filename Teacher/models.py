@@ -2,15 +2,14 @@ from django.db import models
 from core.models import CustomUser  
 from cloudinary.models import CloudinaryField
 
-# COURSE MODEL
 class Course(models.Model):
     CATEGORY_CHOICES = [
-    ('python', 'Python'),
-    ('java', 'Java'),
-    ('react', 'React'),
-    ('php', 'PHP'),
-    ('other', 'Other'), 
-]
+        ('python', 'Python'),
+        ('java', 'Java'),
+        ('react', 'React'),
+        ('php', 'PHP'),
+        ('other', 'Other'), 
+    ]
 
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -22,13 +21,13 @@ class Course(models.Model):
     )
     duration = models.CharField(max_length=50, blank=True)  
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
-    syllabus = CloudinaryField('file',resource_type='raw', null=True)
+    syllabus = CloudinaryField('file', resource_type='raw', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
-    
-# STUDENT MODEL
+
+
 class StudentProfile(models.Model):
     user = models.OneToOneField(
         CustomUser, on_delete=models.CASCADE, related_name='student_profile',
@@ -41,7 +40,6 @@ class StudentProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-# ASSIGNMENT MODEL
 
 class Assignment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assignments')
@@ -49,27 +47,28 @@ class Assignment(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     due_date = models.DateField()
-    max_marks = models.IntegerField(default=100)
+    max_marks = models.PositiveIntegerField(default=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} ({self.course.name})"
+        return self.title
 
 
 class Grade(models.Model):
     student = models.ForeignKey('StudentProfile', on_delete=models.CASCADE, related_name='grades')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='grades')
-    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='grades')
-    score = models.IntegerField()
-    total = models.IntegerField(default=100)
-    date_recorded = models.DateField()  
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    score = models.PositiveIntegerField()
+    total = models.PositiveIntegerField(default=100)
+    date_recorded = models.DateField()
 
     class Meta:
-        unique_together = ('student', 'assignment')  
+        unique_together = ('student', 'assignment')
 
     def __str__(self):
-        return f"{self.student.user.username} - {self.course.name} - {self.assignment.title}: {self.score}/{self.total}"
- #ATTENDANCE MODEL
+        return f"{self.student.user.username} - {self.score}"
+
+
 class Attendance(models.Model):
     STATUS_CHOICES = [
         ('present', 'Present'),
@@ -77,8 +76,8 @@ class Attendance(models.Model):
         ('late', 'Late'),
     ]
 
-    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE, related_name='attendance')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='attendance')
+    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='present')
 
@@ -86,4 +85,4 @@ class Attendance(models.Model):
         unique_together = ('student', 'course', 'date')
 
     def __str__(self):
-        return f"{self.student.user.username} - {self.course.name} - {self.date}: {self.status}"
+        return self.student.user.username
