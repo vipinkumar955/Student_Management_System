@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

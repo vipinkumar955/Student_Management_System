@@ -8,7 +8,7 @@ class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsTeacherOrAdmin]
-
+    
     def get_queryset(self):
         user = self.request.user
         if user.role == 'admin':
