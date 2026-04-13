@@ -4,7 +4,10 @@ from .models import *
 from .serializers import *
 from .permissions import IsTeacherOrAdmin
 
+
+#  COURSE
 class CourseViewSet(ModelViewSet):
+    queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsTeacherOrAdmin]
 
@@ -18,7 +21,9 @@ class CourseViewSet(ModelViewSet):
         serializer.save(teacher=self.request.user)
 
 
+#  ASSIGNMENT
 class AssignmentViewSet(ModelViewSet):
+    queryset = Assignment.objects.all()
     serializer_class = AssignmentSerializer
     permission_classes = [IsAuthenticated, IsTeacherOrAdmin]
 
@@ -29,7 +34,9 @@ class AssignmentViewSet(ModelViewSet):
         return Assignment.objects.filter(course__teacher=user)
 
 
+# ✅ GRADE 
 class GradeViewSet(ModelViewSet):
+    queryset = Grade.objects.all()   #
     serializer_class = GradeSerializer
     permission_classes = [IsAuthenticated, IsTeacherOrAdmin]
 
@@ -40,7 +47,9 @@ class GradeViewSet(ModelViewSet):
         return Grade.objects.filter(course__teacher=user)
 
 
+#  ATTENDANCE 
 class AttendanceViewSet(ModelViewSet):
+    queryset = Attendance.objects.all()  
     serializer_class = AttendanceSerializer
     permission_classes = [IsAuthenticated, IsTeacherOrAdmin]
 
@@ -51,6 +60,7 @@ class AttendanceViewSet(ModelViewSet):
         return Attendance.objects.filter(course__teacher=user)
 
 
+#  STUDENT PROFILE
 class StudentProfileViewSet(ModelViewSet):
     queryset = StudentProfile.objects.all()
     permission_classes = [IsAuthenticated]
