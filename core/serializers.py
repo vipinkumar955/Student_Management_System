@@ -11,7 +11,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             'role': {'required': True}
         }
-
     def create(self, validated_data):
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
@@ -40,10 +39,8 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError({
                 "detail": "Invalid username or password"
             })
-
         # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
-        
         return {
             'username': user.username,
             'role': user.role,
