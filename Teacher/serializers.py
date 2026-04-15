@@ -12,7 +12,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_syllabus_url(self, obj):
         if obj.syllabus:
-            return obj.syllabus.build_url(secure=True)
+            return obj.syllabus.url  
         return None
 
 # STUDENT SERIALIZER
