@@ -21,8 +21,8 @@ class Course(models.Model):
     )
     duration = models.CharField(max_length=50, blank=True)  
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='other')
-    syllabus = CloudinaryField('syllabus',resource_type='raw',  blank=True,null=True
-    )
+    syllabus = CloudinaryField('syllabus',resource_type='auto', blank=True,null=True
+)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

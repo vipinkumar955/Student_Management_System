@@ -14,7 +14,7 @@ class CourseSerializer(serializers.ModelSerializer):
         if obj.syllabus:
             return obj.syllabus.url  
         return None
-
+   
 # STUDENT SERIALIZER
 class StudentProfileSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='user.username', read_only=True)
