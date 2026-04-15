@@ -136,9 +136,13 @@ cloudinary.config(
     api_secret=os.environ.get("CLOUDINARY_SECRET", "YybAJPBxX-T3s7_E-ers77fy2u4")
 )
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'UPLOAD_OPTIONS': {
+        'resource_type': 'auto',
+        'type': 'upload',
 
-# -------------------------
-
+    }
+}
 # -------------------------
 # REST FRAMEWORK
 # -------------------------
